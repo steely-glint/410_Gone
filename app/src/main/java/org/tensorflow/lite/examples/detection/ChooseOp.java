@@ -1,12 +1,15 @@
 package org.tensorflow.lite.examples.detection;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -84,7 +87,14 @@ public class ChooseOp extends AppCompatActivity {
             return false;
         }
     };
-    String html = "<html><body>Hello</body></html>";
+
+    @JavascriptInterface
+    public void gotoNext(String intents) {
+        Log.d("ChooseOp","got intent - leaving... "+intents);
+        Intent intent = new Intent(this, DetectorActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +115,9 @@ public class ChooseOp extends AppCompatActivity {
         webview.getSettings().setDomStorageEnabled(true);
         webview.getSettings().setBuiltInZoomControls(true);
         webview.getSettings().setDisplayZoomControls(false);
-        String turl = "https://pi.pe/";
+        webview.addJavascriptInterface(this, "AndroidInterface"); // To call methods in Android from using js in the html, AndroidInterface.showToast, AndroidInterface.getAndroidVersion etc
+
+        String turl = "https://steely-glint.github.io/410_Gone/chooseOp.html";
         webview.loadUrl(turl);
         // Set up the user interaction to manually show or hide the system UI.
 
