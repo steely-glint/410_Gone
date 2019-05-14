@@ -23,6 +23,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
@@ -167,8 +168,9 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
       return;
     }
     computingDetection = true;
-    LOGGER.i("Preparing image " + currTimestamp + " for detection in bg thread.");
-
+    //LOGGER.d("Preparing image " + currTimestamp + " for detection in bg thread.");
+    //int offset = previewWidth * ((previewHeight - croppedBitmap.getHeight())/2);
+    //rgbFrameBitmap.setPixels(getRgbBytes(), offset, previewWidth, 0, 0, previewWidth, croppedBitmap.getHeight());
     rgbFrameBitmap.setPixels(getRgbBytes(), 0, previewWidth, 0, 0, previewWidth, previewHeight);
 
     if (luminanceCopy == null) {
@@ -178,7 +180,20 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     readyForNextImage();
 
     final Canvas canvas = new Canvas(croppedBitmap);
-    canvas.drawBitmap(rgbFrameBitmap, frameToCropTransform, null);
+    //canvas.drawBitmap(rgbFrameBitmap, frameToCropTransform, null);
+    Rect src = new Rect();
+    src.top=(previewHeight-croppedBitmap.getHeight())/2;
+    src.left=(previewWidth-croppedBitmap.getWidth())/2;
+    src.bottom = src.top + croppedBitmap.getHeight();
+    src.right = src.left + croppedBitmap.getWidth();
+    Rect dst = new Rect();
+    dst.top =0;
+    dst.left = 0;
+    dst.bottom = croppedBitmap.getHeight();
+    dst.right = croppedBitmap.getWidth();
+    //canvas.drawBitmap(rgbFrameBitmap,(float)0.0,(float)0.0,null);
+    canvas.drawBitmap(rgbFrameBitmap,src,dst,null);
+
     // For examining the actual TF input.
     if (SAVE_PREVIEW_BITMAP) {
       ImageUtils.saveBitmap(croppedBitmap);
@@ -188,7 +203,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         new Runnable() {
           @Override
           public void run() {
-            LOGGER.i("Running detection on image " + currTimestamp);
+            //LOGGER.d("Running detection on image " + currTimestamp);
             final long startTime = SystemClock.uptimeMillis();
             final List<Classifier.Recognition> results = detector.recognizeImage(croppedBitmap);
             lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
@@ -211,14 +226,18 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                 new LinkedList<Classifier.Recognition>();
 
             for (final Classifier.Recognition result : results) {
+              String title = ""+result.getTitle();
+
+
               final RectF location = result.getLocation();
               if (location != null && result.getConfidence() >= minimumConfidence) {
-                canvas.drawRect(location, paint);
+                //canvas.drawRect(location, paint);
 
-                cropToFrameTransform.mapRect(location);
+                //cropToFrameTransform.mapRect(location);
 
-                result.setLocation(location);
-                mappedRecognitions.add(result);
+                //result.setLocation(location);
+                //mappedRecognitions.add(result);
+                LOGGER.d("saw "+title);
               }
             }
 

@@ -19,10 +19,15 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import java.util.List;
+
+import org.tensorflow.lite.examples.detection.env.Logger;
 import org.tensorflow.lite.examples.detection.tflite.Classifier.Recognition;
+
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 public class RecognitionScoreView extends View implements ResultsView {
   private static final float TEXT_SIZE_DIP = 14;
@@ -30,8 +35,10 @@ public class RecognitionScoreView extends View implements ResultsView {
   private final Paint fgPaint;
   private final Paint bgPaint;
   private List<Recognition> results;
+  private static final Logger LOGGER = new Logger();
 
-  public RecognitionScoreView(final Context context, final AttributeSet set) {
+
+    public RecognitionScoreView(final Context context, final AttributeSet set) {
     super(context, set);
 
     textSizePx =
@@ -55,12 +62,13 @@ public class RecognitionScoreView extends View implements ResultsView {
     final int x = 10;
     int y = (int) (fgPaint.getTextSize() * 1.5f);
 
-    canvas.drawPaint(bgPaint);
+    //canvas.drawPaint(bgPaint);
 
     if (results != null) {
       for (final Recognition recog : results) {
-        canvas.drawText(recog.getTitle() + ": " + recog.getConfidence(), x, y, fgPaint);
-        y += (int) (fgPaint.getTextSize() * 1.5f);
+        //canvas.drawText(recog.getTitle() + ": " + recog.getConfidence(), x, y, fgPaint);
+        //y += (int) (fgPaint.getTextSize() * 1.5f);
+          LOGGER.i("saw ",recog.toString());
       }
     }
   }

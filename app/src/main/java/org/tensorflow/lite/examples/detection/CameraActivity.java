@@ -20,6 +20,7 @@ import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -227,6 +228,7 @@ public abstract class CameraActivity extends AppCompatActivity
     processImage();
   }
 
+
   /** Callback for Camera2 API */
   @Override
   public void onImageAvailable(final ImageReader reader) {
@@ -260,6 +262,7 @@ public abstract class CameraActivity extends AppCompatActivity
           new Runnable() {
             @Override
             public void run() {
+
               ImageUtils.convertYUV420ToARGB8888(
                   yuvBytes[0],
                   yuvBytes[1],

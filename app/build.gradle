@@ -6,8 +6,8 @@ android {
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "org.tensorflow.lite.examples.detection"
-        minSdkVersion 21
-        targetSdkVersion 21
+        minSdkVersion 23
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -24,6 +24,8 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+    productFlavors {
+    }
 }
 
 // import DownloadModels task
@@ -37,7 +39,7 @@ project.ext.TMP_DIR   = project.buildDir.toString() + '/downloads'
 apply from:'download_model.gradle'
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
     implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly'

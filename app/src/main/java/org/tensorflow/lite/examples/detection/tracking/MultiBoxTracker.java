@@ -145,7 +145,7 @@ public class MultiBoxTracker {
 
   public synchronized void trackResults(
       final List<Recognition> results, final byte[] frame, final long timestamp) {
-    logger.i("Processing %d results from %d", results.size(), timestamp);
+    //logger.i("Processing %d results from %d", results.size(), timestamp);
     processResults(timestamp, results, frame);
   }
 
@@ -182,8 +182,9 @@ public class MultiBoxTracker {
               : String.format("%.2f", (100 * recognition.detectionConfidence));
       //            borderedText.drawText(canvas, trackedPos.left + cornerSize, trackedPos.top,
       // labelString);
-      borderedText.drawText(
-          canvas, trackedPos.left + cornerSize, trackedPos.top, labelString + "%", boxPaint);
+      logger.i("detected ",labelString);
+      //borderedText.drawText(
+      //    canvas, trackedPos.left + cornerSize, trackedPos.top, labelString + "%", boxPaint);
     }
   }
 
@@ -394,7 +395,7 @@ public class MultiBoxTracker {
     }
 
     // Finally safe to say we can track this object.
-    logger.v(
+    logger.i(
         "Tracking object %s (%s) with detection confidence %.2f at position %s",
         potentialObject,
         potential.second.getTitle(),
