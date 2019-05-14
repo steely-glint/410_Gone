@@ -16,6 +16,7 @@
 
 package org.tensorflow.lite.examples.detection;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -28,12 +29,17 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.os.SystemClock;
+import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
+import android.widget.ImageView;
 import android.widget.Toast;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.tensorflow.lite.examples.detection.customview.OverlayView;
 import org.tensorflow.lite.examples.detection.customview.OverlayView.DrawCallback;
 import org.tensorflow.lite.examples.detection.env.BorderedText;
@@ -147,7 +153,19 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
           }
         });
   }
-
+    public void nextIntent() {
+        Log.d("Detector","all done - leaving ");
+        Timer nap=  new Timer();
+        DetectorActivity that = this;
+        TimerTask tt = new TimerTask(){
+            public void run(){
+                Intent intent = new Intent(that, ChooseOp.class);
+                intent.putExtra(ChooseOp.EXTRA_MESSAGE, "https://steely-glint.github.io/410_Gone/alldone.html");
+                startActivity(intent);
+            }
+        };
+        nap.schedule(tt,30000);
+    }
   @Override
   protected void processImage() {
     ++timestamp;
@@ -238,6 +256,20 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                 //result.setLocation(location);
                 //mappedRecognitions.add(result);
                 LOGGER.d("saw "+title);
+                final ImageView seenImage = toolList.get(title);
+                if (seenImage != null){
+                    toolList.remove(title);
+                  runOnUiThread(
+                          new Runnable() {
+                            @Override
+                            public void run() {
+                              seenImage.setBackgroundColor(Color.GREEN);
+                            }
+                          });
+                    if (toolList.size() == 0){
+                        nextIntent();
+                    }
+                }
               }
             }
 

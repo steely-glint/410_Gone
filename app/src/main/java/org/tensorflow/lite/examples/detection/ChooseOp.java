@@ -23,7 +23,7 @@ public class ChooseOp extends AppCompatActivity {
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
      */
     private static final boolean AUTO_HIDE = true;
-
+    final static public String EXTRA_MESSAGE = "com.github.steelyglint.html";
     /**
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
      * user interaction before hiding the system UI.
@@ -100,7 +100,8 @@ public class ChooseOp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_choose_op);
-
+        Intent intent = getIntent();
+        String url = intent.getStringExtra(ChooseOp.EXTRA_MESSAGE);
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
@@ -117,8 +118,10 @@ public class ChooseOp extends AppCompatActivity {
         webview.getSettings().setDisplayZoomControls(false);
         webview.addJavascriptInterface(this, "AndroidInterface"); // To call methods in Android from using js in the html, AndroidInterface.showToast, AndroidInterface.getAndroidVersion etc
 
-        String turl = "https://steely-glint.github.io/410_Gone/chooseOp.html";
-        webview.loadUrl(turl);
+        if (url == null) {
+            url = "https://steely-glint.github.io/410_Gone/chooseOp.html";
+        }
+        webview.loadUrl(url);
         // Set up the user interaction to manually show or hide the system UI.
 
         mContentView.setOnClickListener(new View.OnClickListener() {
