@@ -119,7 +119,7 @@ public class ChooseOp extends AppCompatActivity {
         webview.addJavascriptInterface(this, "AndroidInterface"); // To call methods in Android from using js in the html, AndroidInterface.showToast, AndroidInterface.getAndroidVersion etc
 
         if (url == null) {
-            url = "https://steely-glint.github.io/410_Gone/chooseOp.html";
+            url = "https://steely-glint.github.io/410_Gone/welcome.html";
         }
         webview.loadUrl(url);
         // Set up the user interaction to manually show or hide the system UI.

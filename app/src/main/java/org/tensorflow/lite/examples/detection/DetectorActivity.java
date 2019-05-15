@@ -164,7 +164,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                 startActivity(intent);
             }
         };
-        nap.schedule(tt,30000);
+        nap.schedule(tt,1000);
     }
   @Override
   protected void processImage() {
