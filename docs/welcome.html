@@ -1,11 +1,18 @@
 <html>
 <body>
+<script>
+images = ["Welcome.png","SelectSurgery.png","SelectSurgery_Manual.png"];
+var imageno = 0;
+function next(){
+  imageno++;
+  if(imageno == 3){
+     AndroidInterface.gotoNext("detector");
+  } else {
+     var img = document.getElementById("image");
+     img.src=images[imageno];
+  }
+}
 </script>
-<a href="select.html"><img src="Welcome.png" id="welcome"></img>
-</a>
+<img src="Welcome.png" id="image" onclick="next()"></img>
 </body>
 </html>
-<!--SelectSurgery.png
-SelectSurgery_Manual.png
-Surgery_Complete.png
-Welcome.png-->
